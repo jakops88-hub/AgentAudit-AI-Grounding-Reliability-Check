@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Send, Cpu, AlertCircle, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { API_URL } from '../config';
 
 const EXAMPLES = [
   {
@@ -38,7 +39,7 @@ export function VerificationConsole() {
     setResult(null);
     
     try {
-      const res = await fetch('https://agent-audit-ai-grounding-reliabilit.vercel.app/api/v1/verify', {
+      const res = await fetch(`${API_URL}/api/v1/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export interface LogEntry {
   id: number;
@@ -28,8 +29,8 @@ export function useStats() {
         const headers = { 'x-api-key': 'test-key-123' };
         
         const [statsRes, historyRes] = await Promise.all([
-          fetch('https://agent-audit-ai-grounding-reliabilit.vercel.app/api/v1/stats', { headers }),
-          fetch('https://agent-audit-ai-grounding-reliabilit.vercel.app/api/v1/history', { headers })
+          fetch(`${API_URL}/api/v1/stats`, { headers }),
+          fetch(`${API_URL}/api/v1/history`, { headers })
         ]);
 
         if (!statsRes.ok || !historyRes.ok) throw new Error('Failed to fetch data');
