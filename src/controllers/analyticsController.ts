@@ -3,7 +3,7 @@ import prisma from '../config/prisma';
 
 export const getHistory = async (req: Request, res: Response) => {
   try {
-    const apiKey = req.headers['x-api-key'] as string;
+    const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string);
     
     const logs = await prisma.auditLog.findMany({
       where: { apiKey },
@@ -33,7 +33,7 @@ export const getHistory = async (req: Request, res: Response) => {
 
 export const getStats = async (req: Request, res: Response) => {
   try {
-    const apiKey = req.headers['x-api-key'] as string;
+    const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string);
 
     const logs = await prisma.auditLog.findMany({
       where: { apiKey },

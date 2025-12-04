@@ -23,7 +23,7 @@ export const verifyContent = async (req: Request, res: Response) => {
   try {
     const { groundingService, citationService } = getServices();
     const { question, answer, context } = req.body;
-    const apiKey = req.headers['x-api-key'] as string || 'unknown';
+    const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string) || 'unknown';
 
     // Run checks in parallel for performance
     const [groundingResult, citationResult] = await Promise.all([
