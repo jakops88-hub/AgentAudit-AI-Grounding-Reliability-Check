@@ -14,7 +14,7 @@ enum Action {
   RETRY
 }
 
-model VerificationLog {
+model AuditLog {
   id             String   @id @default(uuid())
   apiKey         String
   timestamp      DateTime @default(now())

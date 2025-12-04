@@ -2,20 +2,48 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import compression from 'compression';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'yamljs';
+import path from 'path';
+
 import verifyRoutes from './routes/verifyRoutes';
+import analyticsRoutes from './routes/analyticsRoutes';
 import { authenticateApiKey } from './middleware/auth';
+import { apiLimiter } from './middleware/rateLimiter';
 
 const app = express();
 
+// Security & Performance Middleware
 app.use(helmet());
 app.use(cors());
+app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use('/api/v1', authenticateApiKey, verifyRoutes);
+// Rate Limiting
+app.use('/api', apiLimiter);
 
+// Documentation
+const swaggerDocument = yaml.load(path.join(__dirname, './docs/openapi.yaml'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Routes
+app.use('/api/v1', authenticateApiKey, verifyRoutes);
+app.use('/api/v1', authenticateApiKey, analyticsRoutes);
+
+// Health Check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
 });
 
 export default app;

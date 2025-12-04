@@ -42,6 +42,7 @@ export const verifyContent = async (req: Request, res: Response) => {
       tests: {
         grounding: {
           pass: groundingResult.pass,
+          score: Number(groundingResult.score.toFixed(2)),
           reason: groundingResult.reason,
           unsupported_claims: groundingResult.unsupported_claims
         },
@@ -58,7 +59,7 @@ export const verifyContent = async (req: Request, res: Response) => {
 
     // 4. Async Logging (Fire and forget)
     const durationMs = Date.now() - startTime;
-    prisma.verificationLog.create({
+    prisma.auditLog.create({
       data: {
         apiKey,
         durationMs,
@@ -81,47 +82,6 @@ export const verifyContent = async (req: Request, res: Response) => {
   }
 };
 
-export const getStats = async (req: Request, res: Response) => {
-  try {
-    const apiKey = req.headers['x-api-key'] as string;
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const logs = await prisma.verificationLog.findMany({
-      where: {
-        apiKey,
-        timestamp: {
-          gte: thirtyDaysAgo
-        }
-      },
-      select: {
-        result_action: true,
-        result_score: true
-      }
-    });
-
-    const totalRequests = logs.length;
-    const approvedRequests = logs.filter(l => l.result_action === 'APPROVE').length;
-    const passRate = totalRequests > 0 ? (approvedRequests / totalRequests) * 100 : 0;
-    
-    const totalScore = logs.reduce((sum, log) => sum + log.result_score, 0);
-    const averageTrustScore = totalRequests > 0 ? totalScore / totalRequests : 0;
-
-    res.json({
-      period: '30d',
-      total_requests: totalRequests,
-      pass_rate_percentage: Number(passRate.toFixed(2)),
-      average_trust_score: Number(averageTrustScore.toFixed(2))
-    });
-
-  } catch (error) {
-    console.error('Stats retrieval failed:', error);
-    res.status(500).json({
-      status: 'error',
-      message: 'Internal server error retrieving stats'
-    });
-  }
-};
 
 function constructRetrySuggestion(grounding: any, citation: any): string {
   const suggestions = [];
