@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Activity, Shield, Zap, Server, AlertTriangle, CheckCircle, Clock, Terminal, Lock } from 'lucide-react';
 import { useStats, LogEntry } from './hooks/useStats';
+import { VerificationConsole } from './components/VerificationConsole';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from './lib/utils';
 
@@ -121,9 +122,9 @@ function App() {
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1600px] mx-auto relative z-10">
         {/* Header */}
-        <header className="flex justify-between items-center mb-12">
+        <header className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
@@ -152,9 +153,9 @@ function App() {
             <p className="text-gray-400">{error}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column: Stats */}
-            <div className="space-y-6">
+          <div className="space-y-6">
+            {/* Top Row: Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <MetricCard 
                 title="Total Verifications" 
                 value={stats?.total_verifications.toLocaleString()} 
@@ -175,43 +176,49 @@ function App() {
               />
             </div>
 
-            {/* Middle Column: Trust Gauge */}
-            <div className="glass-panel rounded-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-              <h3 className="text-lg font-medium text-gray-400 mb-8 uppercase tracking-widest">Global Trust Score</h3>
-              <TrustGauge score={stats?.average_trust_score || 0} />
-              <div className="mt-8 grid grid-cols-2 gap-4 w-full">
-                <div className="text-center p-4 rounded-lg bg-white/5">
-                  <div className="text-xs text-gray-500 uppercase mb-1">Reliability</div>
-                  <div className="text-xl font-bold text-white">High</div>
-                </div>
-                <div className="text-center p-4 rounded-lg bg-white/5">
-                  <div className="text-xs text-gray-500 uppercase mb-1">Grounding</div>
-                  <div className="text-xl font-bold text-white">Verified</div>
-                </div>
-              </div>
-            </div>
+            {/* Bottom Row: Main Panels */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[650px]">
+              {/* Left: Verification Console */}
+              <VerificationConsole />
 
-            {/* Right Column: Live Logs */}
-            <div className="glass-panel rounded-2xl p-6 flex flex-col h-[600px]">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-medium text-gray-400 flex items-center gap-2">
-                  <Terminal size={18} />
-                  LIVE LOGS
-                </h3>
-                <span className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">REAL-TIME</span>
+              {/* Middle: Trust Gauge */}
+              <div className="glass-panel rounded-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+                <h3 className="text-lg font-medium text-gray-400 mb-8 uppercase tracking-widest">Global Trust Score</h3>
+                <TrustGauge score={stats?.average_trust_score || 0} />
+                <div className="mt-8 grid grid-cols-2 gap-4 w-full">
+                  <div className="text-center p-4 rounded-lg bg-white/5">
+                    <div className="text-xs text-gray-500 uppercase mb-1">Reliability</div>
+                    <div className="text-xl font-bold text-white">High</div>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-white/5">
+                    <div className="text-xs text-gray-500 uppercase mb-1">Grounding</div>
+                    <div className="text-xl font-bold text-white">Verified</div>
+                  </div>
+                </div>
               </div>
-              <div className="flex-1 overflow-y-auto pr-2 space-y-1 custom-scrollbar">
-                <AnimatePresence initial={false}>
-                  {stats?.recent_logs?.map((log) => (
-                    <LogItem key={log.id} log={log} />
-                  ))}
-                  {(!stats?.recent_logs || stats.recent_logs.length === 0) && (
-                    <div className="text-center text-gray-600 py-12 font-mono text-sm">
-                      WAITING FOR TRAFFIC...
-                    </div>
-                  )}
-                </AnimatePresence>
+
+              {/* Right: Live Logs */}
+              <div className="glass-panel rounded-2xl p-6 flex flex-col h-full">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-medium text-gray-400 flex items-center gap-2">
+                    <Terminal size={18} />
+                    LIVE LOGS
+                  </h3>
+                  <span className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">REAL-TIME</span>
+                </div>
+                <div className="flex-1 overflow-y-auto pr-2 space-y-1 custom-scrollbar">
+                  <AnimatePresence initial={false}>
+                    {stats?.recent_logs?.map((log) => (
+                      <LogItem key={log.id} log={log} />
+                    ))}
+                    {(!stats?.recent_logs || stats.recent_logs.length === 0) && (
+                      <div className="text-center text-gray-600 py-12 font-mono text-sm">
+                        WAITING FOR TRAFFIC...
+                      </div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
           </div>
