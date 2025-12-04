@@ -85,9 +85,12 @@ export const verifyContent = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error('Verification failed:', error);
+    // Return detailed error in development or if it's an OpenAI error
+    const errorMessage = (error as Error).message;
     res.status(500).json({
       status: 'error',
-      message: 'Internal server error during verification'
+      message: 'Internal server error during verification',
+      details: process.env.NODE_ENV === 'development' || errorMessage.includes('OpenAI') ? errorMessage : undefined
     });
   }
 };
