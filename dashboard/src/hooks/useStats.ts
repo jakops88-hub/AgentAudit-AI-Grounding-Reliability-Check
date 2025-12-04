@@ -69,7 +69,7 @@ export function useStats() {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 3000);
+    const interval = setInterval(fetchData, 10000); // Poll every 10 seconds to avoid rate limits
     return () => clearInterval(interval);
   }, []);
 
