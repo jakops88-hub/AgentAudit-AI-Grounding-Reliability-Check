@@ -4,14 +4,24 @@ import { CitationService } from '../services/CitationService';
 import { OpenAIProvider } from '../providers/OpenAIProvider';
 import prisma from '../config/prisma';
 
-// Initialize services (Dependency Injection would be better in a larger app)
-const llmProvider = new OpenAIProvider();
-const groundingService = new GroundingService(llmProvider);
-const citationService = new CitationService();
+// Lazy initialization to prevent startup crashes if env vars are missing
+let llmProvider: OpenAIProvider;
+let groundingService: GroundingService;
+let citationService: CitationService;
+
+function getServices() {
+  if (!llmProvider) {
+    llmProvider = new OpenAIProvider();
+    groundingService = new GroundingService(llmProvider);
+    citationService = new CitationService();
+  }
+  return { groundingService, citationService };
+}
 
 export const verifyContent = async (req: Request, res: Response) => {
   const startTime = Date.now();
   try {
+    const { groundingService, citationService } = getServices();
     const { question, answer, context } = req.body;
     const apiKey = req.headers['x-api-key'] as string || 'unknown';
 
@@ -82,6 +92,48 @@ export const verifyContent = async (req: Request, res: Response) => {
   }
 };
 
+
+export const getStats = async (req: Request, res: Response) => {
+  try {
+    const apiKey = req.headers['x-api-key'] as string;
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const logs = await prisma.auditLog.findMany({
+      where: {
+        apiKey,
+        timestamp: {
+          gte: thirtyDaysAgo
+        }
+      },
+      select: {
+        result_action: true,
+        result_score: true
+      }
+    });
+
+    const totalRequests = logs.length;
+    const approvedRequests = logs.filter(l => l.result_action === 'APPROVE').length;
+    const passRate = totalRequests > 0 ? (approvedRequests / totalRequests) * 100 : 0;
+    
+    const totalScore = logs.reduce((sum, log) => sum + log.result_score, 0);
+    const averageTrustScore = totalRequests > 0 ? totalScore / totalRequests : 0;
+
+    res.json({
+      period: '30d',
+      total_requests: totalRequests,
+      pass_rate_percentage: Number(passRate.toFixed(2)),
+      average_trust_score: Number(averageTrustScore.toFixed(2))
+    });
+
+  } catch (error) {
+    console.error('Stats retrieval failed:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error retrieving stats'
+    });
+  }
+};
 
 function constructRetrySuggestion(grounding: any, citation: any): string {
   const suggestions = [];

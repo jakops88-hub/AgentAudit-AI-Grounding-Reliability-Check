@@ -16,7 +16,9 @@ const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
   console.error('❌ Invalid environment variables:', parsedEnv.error.format());
-  process.exit(1);
+  // Don't exit process in serverless environment, it causes 500 without logs.
+  // Instead, we'll allow the app to start but it might fail later.
+  // We'll export a partial/unsafe env object.
 }
 
-export const env = parsedEnv.data;
+export const env = parsedEnv.success ? parsedEnv.data : process.env as any;
