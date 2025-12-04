@@ -7,10 +7,16 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
   const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string);
 
   if (!apiKey || typeof apiKey !== 'string') {
+    console.log('Auth failed: No API key provided');
     return res.status(401).json({
       status: 'error',
       message: 'Missing or invalid API key. Please provide x-api-key header or api_key query parameter.',
     });
+  }
+
+  // Debug logging for Vercel
+  if (!env.CLIENT_API_KEYS || env.CLIENT_API_KEYS.length === 0) {
+    console.error('CRITICAL: No CLIENT_API_KEYS configured in environment!');
   }
 
   const providedKeyBuffer = Buffer.from(apiKey);
@@ -24,11 +30,13 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
     if (providedKeyBuffer.length === validKeyBuffer.length) {
       if (crypto.timingSafeEqual(providedKeyBuffer, validKeyBuffer)) {
         isValid = true;
+        break;
       }
     }
   }
 
   if (!isValid) {
+    console.warn(`Auth failed: Invalid key provided. (Key length: ${apiKey.length})`);
     return res.status(401).json({
       status: 'error',
       message: 'Unauthorized. Invalid API key.',
