@@ -106,6 +106,21 @@ function App() {
     return ((stats.successful_verifications / stats.total_verifications) * 100).toFixed(1);
   }, [stats]);
 
+  const getReliabilityLabel = (score: number) => {
+    if (score >= 0.8) return { text: "High", color: "text-green-400" };
+    if (score >= 0.5) return { text: "Medium", color: "text-yellow-400" };
+    return { text: "Low", color: "text-red-400" };
+  };
+
+  const getGroundingLabel = (score: number) => {
+    if (score >= 0.8) return { text: "Verified", color: "text-green-400" };
+    if (score >= 0.5) return { text: "Partial", color: "text-yellow-400" };
+    return { text: "Unverified", color: "text-red-400" };
+  };
+
+  const reliability = getReliabilityLabel(stats?.average_trust_score || 0);
+  const grounding = getGroundingLabel(stats?.average_trust_score || 0);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#030303] flex items-center justify-center">
@@ -189,11 +204,11 @@ function App() {
                 <div className="mt-8 grid grid-cols-2 gap-4 w-full">
                   <div className="text-center p-4 rounded-lg bg-white/5">
                     <div className="text-xs text-gray-500 uppercase mb-1">Reliability</div>
-                    <div className="text-xl font-bold text-white">High</div>
+                    <div className={cn("text-xl font-bold", reliability.color)}>{reliability.text}</div>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-white/5">
                     <div className="text-xs text-gray-500 uppercase mb-1">Grounding</div>
-                    <div className="text-xl font-bold text-white">Verified</div>
+                    <div className={cn("text-xl font-bold", grounding.color)}>{grounding.text}</div>
                   </div>
                 </div>
               </div>
