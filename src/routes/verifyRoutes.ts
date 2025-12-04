@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { verifyContent } from '../controllers/verifyController';
+import { verifyContent, getStats } from '../controllers/verifyController';
 import { validate } from '../middleware/validate';
 import { z } from 'zod';
 
@@ -16,5 +16,6 @@ const verifySchema = z.object({
 });
 
 router.post('/verify', validate(verifySchema), verifyContent);
+router.get('/stats', getStats);
 
 export default router;

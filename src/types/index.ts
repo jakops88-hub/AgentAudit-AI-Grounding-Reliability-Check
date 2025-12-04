@@ -11,6 +11,8 @@ export interface GroundingResult {
   unsupported_claims: string[];
 }
 
+export * from './citation';
+
 export interface VerifyResponse {
   success: boolean;
   data: GroundingResult;

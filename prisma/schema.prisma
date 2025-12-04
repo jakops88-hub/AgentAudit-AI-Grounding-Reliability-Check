@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Action {
+  APPROVE
+  REJECT
+  RETRY
+}
+
+model VerificationLog {
+  id             String   @id @default(uuid())
+  apiKey         String
+  timestamp      DateTime @default(now())
+  durationMs     Int
+  input_question String
+  input_answer   String
+  result_action  Action
+  result_score   Float
+  result_details Json
+
+  @@index([apiKey])
+  @@index([timestamp])
+}

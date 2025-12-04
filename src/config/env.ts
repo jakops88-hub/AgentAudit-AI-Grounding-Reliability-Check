@@ -7,6 +7,9 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().default('3000').transform((val) => parseInt(val, 10)),
   OPENAI_API_KEY: z.string().min(1, "OPENAI_API_KEY is required"),
+  CLIENT_API_KEYS: z.string().default('').transform((val) => val.split(',').map(k => k.trim()).filter(k => k.length > 0)),
+  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
+  DIRECT_URL: z.string().min(1, "DIRECT_URL is required"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
