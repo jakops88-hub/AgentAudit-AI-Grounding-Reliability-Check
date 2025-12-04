@@ -4,13 +4,13 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
-import yaml from 'yamljs';
 import path from 'path';
 
 import verifyRoutes from './routes/verifyRoutes';
 import analyticsRoutes from './routes/analyticsRoutes';
 import { authenticateApiKey } from './middleware/auth';
 import { apiLimiter } from './middleware/rateLimiter';
+import { swaggerDocument } from './docs/swagger';
 
 const app = express();
 
@@ -25,12 +25,7 @@ app.use(express.json());
 app.use('/api', apiLimiter);
 
 // Documentation
-try {
-  const swaggerDocument = yaml.load(path.join(__dirname, './docs/openapi.yaml'));
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-} catch (error) {
-  console.warn('Failed to load Swagger documentation:', error);
-}
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use('/api/v1', authenticateApiKey, verifyRoutes);
