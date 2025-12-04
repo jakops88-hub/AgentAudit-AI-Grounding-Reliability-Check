@@ -3,12 +3,13 @@ import { env } from '../config/env';
 import crypto from 'crypto';
 
 export const authenticateApiKey = (req: Request, res: Response, next: NextFunction) => {
-  const apiKey = req.headers['x-api-key'];
+  // Allow API key from header OR query parameter (for easier browser testing)
+  const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string);
 
   if (!apiKey || typeof apiKey !== 'string') {
     return res.status(401).json({
       status: 'error',
-      message: 'Missing or invalid API key. Please provide x-api-key header.',
+      message: 'Missing or invalid API key. Please provide x-api-key header or api_key query parameter.',
     });
   }
 
