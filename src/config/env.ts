@@ -15,7 +15,7 @@ const envSchema = z.object({
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  console.error('❌ Invalid environment variables:', parsedEnv.error.format());
+  console.error('❌ Invalid environment variables:', JSON.stringify(parsedEnv.error.format(), null, 2));
   // Don't exit process in serverless environment, it causes 500 without logs.
   // Instead, we'll allow the app to start but it might fail later.
   // We'll export a partial/unsafe env object.

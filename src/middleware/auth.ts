@@ -14,13 +14,22 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
     });
   }
 
+  // Normalize CLIENT_API_KEYS to array (handle both Zod-parsed array and raw string fallback)
+  let clientKeys: string[] = [];
+  if (Array.isArray(env.CLIENT_API_KEYS)) {
+    clientKeys = env.CLIENT_API_KEYS;
+  } else if (typeof env.CLIENT_API_KEYS === 'string') {
+    // Fallback for when Zod validation fails and we get raw process.env
+    clientKeys = (env.CLIENT_API_KEYS as string).split(',').map(k => k.trim()).filter(k => k.length > 0);
+  }
+
   // Debug logging for Vercel
-  if (!env.CLIENT_API_KEYS || env.CLIENT_API_KEYS.length === 0) {
+  if (clientKeys.length === 0) {
     console.error('CRITICAL: No CLIENT_API_KEYS configured in environment!');
   } else {
     // Log configured keys (masked) to help debug mismatch
-    console.log(`Auth Debug: Received key length ${apiKey.length}. Configured keys: ${env.CLIENT_API_KEYS.length}`);
-    env.CLIENT_API_KEYS.forEach((k: string, i: number) => {
+    console.log(`Auth Debug: Received key length ${apiKey.length}. Configured keys: ${clientKeys.length}`);
+    clientKeys.forEach((k: string, i: number) => {
         console.log(`Key [${i}]: length=${k.length}, prefix=${k.substring(0, 2)}***`);
     });
   }
@@ -29,7 +38,7 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
   let isValid = false;
 
   // Timing-safe comparison against all allowed keys
-  for (const validKey of env.CLIENT_API_KEYS) {
+  for (const validKey of clientKeys) {
     const validKeyBuffer = Buffer.from(validKey);
     
     // Only compare if lengths match to avoid leaking length information via error or timing
