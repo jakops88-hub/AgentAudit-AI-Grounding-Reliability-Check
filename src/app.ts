@@ -25,8 +25,12 @@ app.use(express.json());
 app.use('/api', apiLimiter);
 
 // Documentation
-const swaggerDocument = yaml.load(path.join(__dirname, './docs/openapi.yaml'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+try {
+  const swaggerDocument = yaml.load(path.join(__dirname, './docs/openapi.yaml'));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} catch (error) {
+  console.warn('Failed to load Swagger documentation:', error);
+}
 
 // Routes
 app.use('/api/v1', authenticateApiKey, verifyRoutes);
