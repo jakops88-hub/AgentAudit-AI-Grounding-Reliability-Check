@@ -34,6 +34,7 @@ const SCAN_STEPS = [
   "GENERATING AUDIT REPORT..."
 ];
 
+// Verification Console Component
 export function VerificationConsole() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
