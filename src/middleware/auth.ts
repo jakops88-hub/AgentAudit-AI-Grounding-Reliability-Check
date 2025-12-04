@@ -17,6 +17,12 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
   // Debug logging for Vercel
   if (!env.CLIENT_API_KEYS || env.CLIENT_API_KEYS.length === 0) {
     console.error('CRITICAL: No CLIENT_API_KEYS configured in environment!');
+  } else {
+    // Log configured keys (masked) to help debug mismatch
+    console.log(`Auth Debug: Received key length ${apiKey.length}. Configured keys: ${env.CLIENT_API_KEYS.length}`);
+    env.CLIENT_API_KEYS.forEach((k: string, i: number) => {
+        console.log(`Key [${i}]: length=${k.length}, prefix=${k.substring(0, 2)}***`);
+    });
   }
 
   const providedKeyBuffer = Buffer.from(apiKey);

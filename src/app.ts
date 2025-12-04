@@ -14,6 +14,9 @@ import { swaggerDocument } from './docs/swagger';
 
 const app = express();
 
+// Trust Proxy (Required for Vercel/Rate Limiting)
+app.set('trust proxy', 1);
+
 // Security & Performance Middleware
 app.use(helmet());
 app.use(cors());
