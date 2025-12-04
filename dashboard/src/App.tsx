@@ -98,6 +98,16 @@ const LogItem = ({ log }: { log: LogEntry }) => (
   </motion.div>
 );
 
+import { useMemo } from 'react';
+import { Shield, Activity, CheckCircle, Zap, Lock, AlertTriangle, Terminal } from 'lucide-react';
+import { useStats } from './hooks/useStats';
+import { VerificationConsole } from './components/VerificationConsole';
+import { TrustGauge } from './components/TrustGauge';
+import { LogItem } from './components/LogItem';
+import { MetricCard } from './components/MetricCard';
+import { AnimatePresence } from 'framer-motion';
+import { cn } from './lib/utils';
+
 function App() {
   const { stats, loading, error } = useStats();
 

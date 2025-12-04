@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, Cpu, AlertCircle, ShieldAlert, ShieldCheck, Scan, Terminal as TerminalIcon, RefreshCw, Check, X } from 'lucide-react';
+import { Send, Cpu, ShieldAlert, ShieldCheck, Scan, Terminal as TerminalIcon, RefreshCw, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import { API_URL } from '../config';
@@ -95,7 +95,6 @@ export function VerificationConsole() {
     if (!unsupportedClaims.length) return <span className="text-green-400/90">{text}</span>;
 
     // Simple highlighting logic (can be improved with more complex matching)
-    let highlighted = text;
     // This is a simplified visualizer. In a real app, we'd map indices.
     // Here we just check if the claim exists in the text to highlight it.
     
