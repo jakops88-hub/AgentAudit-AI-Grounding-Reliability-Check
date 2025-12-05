@@ -44,19 +44,21 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-white p-8 relative overflow-hidden">
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 animated-grid [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
+      {/* Premium Grid Background */}
+      <div className="absolute inset-0 premium-grid [mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,#000_60%,transparent_100%)] pointer-events-none" />
       
-      {/* Scanline Effect */}
+      {/* Subtle Radial Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(0,255,148,0.08),transparent_50%)] pointer-events-none" />
+      
+      {/* Premium Scanlines */}
       <div className="scanline" />
       
-      {/* Floating Stars */}
-      <div className="stars pointer-events-none">
-        {[...Array(10)].map((_, i) => <div key={i} className="star" />)}
+      {/* Floating Particles - Elegant and Smooth */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className="particle" style={{ bottom: '0' }} />
+        ))}
       </div>
-      
-      {/* Radial Gradient Overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,148,0.05),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[1600px] mx-auto relative z-10">
         {/* Header */}
