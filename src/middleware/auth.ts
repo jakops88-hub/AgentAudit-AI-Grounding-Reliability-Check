@@ -3,7 +3,22 @@ import { env } from '../config/env';
 import crypto from 'crypto';
 
 export const authenticateApiKey = (req: Request, res: Response, next: NextFunction) => {
-  // Allow API key from header OR query parameter (for easier browser testing)
+  // Check if request is from RapidAPI
+  const rapidApiSecret = req.headers['x-rapidapi-proxy-secret'] as string;
+  if (rapidApiSecret && process.env.RAPIDAPI_PROXY_SECRET) {
+    if (rapidApiSecret === process.env.RAPIDAPI_PROXY_SECRET) {
+      // Valid RapidAPI request - bypass normal API key check
+      return next();
+    } else {
+      console.warn('Invalid RapidAPI proxy secret');
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid RapidAPI proxy secret',
+      });
+    }
+  }
+
+  // Normal API key authentication
   const apiKey = (req.headers['x-api-key'] as string) || (req.query.api_key as string);
 
   if (!apiKey || typeof apiKey !== 'string') {

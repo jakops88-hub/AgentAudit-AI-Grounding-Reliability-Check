@@ -1,0 +1,396 @@
+openapi: 3.0.0
+info:
+  title: AgentAudit - AI Reliability Verification API
+  description: |
+    **Verify AI Agent Reliability with Grounding & Citation Checks**
+    
+    AgentAudit is an advanced API that validates AI-generated responses by checking:
+    - **Grounding**: Whether the answer is supported by provided context
+    - **Citation**: If specific facts are properly cited
+    - **Hallucination Detection**: Identifies unsupported claims
+    
+    Perfect for RAG applications, AI chatbots, and content verification systems.
+    
+    ### Key Features:
+    - Real-time verification of AI responses
+    - Trust scores (0-1) for reliability assessment
+    - Detailed test breakdowns (grounding, citation)
+    - Analytics & history tracking
+    - Built on GPT-4 for accurate verification
+    
+    ### Use Cases:
+    - RAG (Retrieval-Augmented Generation) validation
+    - AI chatbot quality assurance
+    - Content moderation & fact-checking
+    - LLM output verification
+  version: 1.0.0
+  contact:
+    name: AgentAudit Support
+    email: support@agentaudit.com
+  termsOfService: https://agentaudit.com/terms
+  x-logo:
+    url: https://your-logo-url.com/logo.png
+    altText: AgentAudit Logo
+
+servers:
+  - url: https://agent-audit-ai-grounding-reliabilit.vercel.app/api/v1
+    description: Production Server
+
+tags:
+  - name: Verification
+    description: Core verification endpoints
+  - name: Analytics
+    description: Usage statistics and history
+
+paths:
+  /verify:
+    post:
+      tags:
+        - Verification
+      summary: Verify AI-generated content
+      description: |
+        Verifies if an AI-generated answer is grounded in the provided context.
+        
+        Returns a trust score (0-1) and detailed test results including:
+        - Grounding check (is answer supported by context?)
+        - Citation check (are facts properly cited?)
+        - List of unsupported claims (hallucinations)
+      operationId: verifyContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+            examples:
+              basic:
+                summary: Basic Example
+                value:
+                  question: "What is the capital of France?"
+                  answer: "The capital of France is Paris."
+                  context: "France is a country in Western Europe. Its capital city is Paris, which is also its largest city."
+              multiple_contexts:
+                summary: Multiple Context Sources
+                value:
+                  question: "What are the main features of Python?"
+                  answer: "Python is an interpreted, high-level programming language with dynamic typing and automatic memory management."
+                  context: |
+                    Python is an interpreted language. It uses dynamic typing.
+                    Python features automatic memory management through garbage collection.
+      responses:
+        '200':
+          description: Verification completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+              examples:
+                approved:
+                  summary: High Trust Score (Approved)
+                  value:
+                    trust_score: 0.95
+                    action: "APPROVE"
+                    tests:
+                      grounding:
+                        pass: true
+                        score: 1
+                        reason: "The answer is directly supported by the provided context."
+                        unsupported_claims: []
+                      citation:
+                        pass: true
+                        score: 0.9
+                        reason: "All facts are properly cited."
+                rejected:
+                  summary: Low Trust Score (Rejected)
+                  value:
+                    trust_score: 0.3
+                    action: "REJECT"
+                    tests:
+                      grounding:
+                        pass: false
+                        score: 0.4
+                        reason: "Answer contains information not found in context."
+                        unsupported_claims:
+                          - "The capital has a population of 15 million people"
+                      citation:
+                        pass: false
+                        score: 0.2
+                        reason: "Facts are not properly cited."
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                status: "error"
+                message: "Validation error: question is required"
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stats:
+    get:
+      tags:
+        - Analytics
+      summary: Get verification statistics
+      description: |
+        Retrieve overall statistics about your verification usage including:
+        - Total number of verifications
+        - Average trust score
+        - Hallucination rate
+        - Success/failure counts
+      operationId: getStats
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+              example:
+                total_requests: 1247
+                average_trust_score: 0.847
+                hallucination_rate: "12.3%"
+                successful_verifications: 1093
+                failed_verifications: 154
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /history:
+    get:
+      tags:
+        - Analytics
+      summary: Get verification history
+      description: |
+        Retrieve recent verification history with details about each request.
+        Returns the 50 most recent verifications by default.
+      operationId: getHistory
+      parameters:
+        - name: limit
+          in: query
+          description: Number of records to return (max 100)
+          required: false
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: History retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    VerifyRequest:
+      type: object
+      required:
+        - question
+        - answer
+        - context
+      properties:
+        question:
+          type: string
+          description: The original question asked to the AI agent
+          example: "What is the capital of France?"
+          minLength: 1
+        answer:
+          type: string
+          description: The AI-generated answer to be verified
+          example: "The capital of France is Paris."
+          minLength: 1
+        context:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          description: The source context/documents used to generate the answer (string or array of strings)
+          example: "France is a country in Western Europe. Its capital is Paris."
+
+    VerifyResponse:
+      type: object
+      properties:
+        trust_score:
+          type: number
+          format: float
+          description: Overall reliability score between 0 and 1
+          minimum: 0
+          maximum: 1
+          example: 0.95
+        action:
+          type: string
+          enum: [APPROVE, REJECT]
+          description: Recommended action based on trust score threshold
+          example: "APPROVE"
+        tests:
+          type: object
+          properties:
+            grounding:
+              $ref: '#/components/schemas/GroundingTest'
+            citation:
+              $ref: '#/components/schemas/CitationTest'
+
+    GroundingTest:
+      type: object
+      properties:
+        pass:
+          type: boolean
+          description: Whether the grounding test passed
+          example: true
+        score:
+          type: number
+          format: float
+          description: Grounding score between 0 and 1
+          minimum: 0
+          maximum: 1
+          example: 1.0
+        reason:
+          type: string
+          description: Explanation of the grounding result
+          example: "The answer is directly supported by the provided context."
+        unsupported_claims:
+          type: array
+          items:
+            type: string
+          description: List of claims in the answer not supported by context (hallucinations)
+          example: []
+
+    CitationTest:
+      type: object
+      properties:
+        pass:
+          type: boolean
+          description: Whether the citation test passed
+          example: true
+        score:
+          type: number
+          format: float
+          description: Citation quality score between 0 and 1
+          minimum: 0
+          maximum: 1
+          example: 0.9
+        reason:
+          type: string
+          description: Explanation of the citation result
+          example: "All facts are properly cited."
+
+    StatsResponse:
+      type: object
+      properties:
+        total_requests:
+          type: integer
+          description: Total number of verification requests
+          example: 1247
+        average_trust_score:
+          type: number
+          format: float
+          description: Average trust score across all verifications
+          example: 0.847
+        hallucination_rate:
+          type: string
+          description: Percentage of verifications with detected hallucinations
+          example: "12.3%"
+        successful_verifications:
+          type: integer
+          description: Number of approved verifications
+          example: 1093
+        failed_verifications:
+          type: integer
+          description: Number of rejected verifications
+          example: 154
+
+    HistoryResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationLog'
+
+    VerificationLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique log entry ID
+          example: 1234
+        timestamp:
+          type: string
+          format: date-time
+          description: When the verification occurred
+          example: "2025-12-05T14:30:00Z"
+        question:
+          type: string
+          description: The question that was asked
+          example: "What is the capital of France?"
+        trust_score:
+          type: number
+          format: float
+          description: Trust score for this verification
+          example: 0.95
+        action:
+          type: string
+          enum: [APPROVE, REJECT]
+          example: "APPROVE"
+        latency_ms:
+          type: integer
+          description: Response time in milliseconds
+          example: 342
+
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Invalid API key"
+
+x-pricing:
+  - name: Free
+    price: $0
+    requests: 100
+    description: Perfect for testing
+  - name: Starter
+    price: $29
+    requests: 5000
+    description: For small projects
+  - name: Pro
+    price: $99
+    requests: 50000
+    description: For production use
+  - name: Enterprise
+    price: Custom
+    requests: Unlimited
+    description: Custom solutions
