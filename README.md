@@ -6,13 +6,12 @@ AgentAudit acts as a semantic firewall between your AI agents and your end users
 
 Unlike naive RAG implementations that assume "Good Retrieval = Good Answer", AgentAudit programmatically detects ungrounded claims, citation errors, and contradictions before they reach production.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjakops88-hub%2FAgentAudit)
 
 ## Live Demo
 
 Access the verification dashboard to test the engine against your own data:
 
-**[Launch Live Dashboard]((https://agentaudit-dashboard.vercel.app/))**
+**[Launch Live Dashboard](https://agentaudit-dashboard.vercel.app/)**
 
 ![AgentAudit Dashboard](https://github.com/user-attachments/assets/a27db792-e18d-4890-9af0-ed09e97387ca)
 
