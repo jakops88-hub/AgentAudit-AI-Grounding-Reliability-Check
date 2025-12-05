@@ -44,8 +44,19 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-white p-8 relative overflow-hidden">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
+      {/* Animated Background Grid */}
+      <div className="absolute inset-0 animated-grid [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
+      
+      {/* Scanline Effect */}
+      <div className="scanline" />
+      
+      {/* Floating Stars */}
+      <div className="stars pointer-events-none">
+        {[...Array(10)].map((_, i) => <div key={i} className="star" />)}
+      </div>
+      
+      {/* Radial Gradient Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,148,0.05),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[1600px] mx-auto relative z-10">
         {/* Header */}
