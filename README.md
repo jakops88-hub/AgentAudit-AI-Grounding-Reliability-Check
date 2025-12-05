@@ -12,10 +12,9 @@ Unlike naive RAG implementations that assume "Good Retrieval = Good Answer", Age
 
 Access the verification dashboard to test the engine against your own data:
 
-**[Launch Live Dashboard]([https://agentaudit-dashboard-l20arpgwo-jacobs-projects-f74302f1.vercel.app/](https://agentaudit-dashboard.vercel.app/))**
+**[Launch Live Dashboard]((https://agentaudit-dashboard.vercel.app/))**
 
-![AgentAudit Dashboard](<img width="1657" height="910" alt="image" src="https://github.com/user-attachments/assets/454d986f-4a6d-42da-8fd2-f2ca4cd756ac" />
-)
+![AgentAudit Dashboard](https://github.com/user-attachments/assets/a27db792-e18d-4890-9af0-ed09e97387ca)
 
 ## Architecture & Stack
 
