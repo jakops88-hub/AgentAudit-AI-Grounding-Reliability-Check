@@ -14,6 +14,7 @@ Don't want to host the vector database yourself? I've deployed a managed version
 
 [👉 **Get your API Key on RapidAPI**](https://rapidapi.com/jakops88/api/agentaudit-ai-hallucination-fact-checker1)
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/50651384-6c50cd68-8de9-40d6-b39b-e14cad227a6e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D50651384-6c50cd68-8de9-40d6-b39b-e14cad227a6e%26entityType%3Dcollection%26workspaceId%3D3f27166b-a9b8-48a8-8913-104f8e9d1958)
 
 ## Live Demo
 
