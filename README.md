@@ -1,4 +1,4 @@
-9⁹# AgentAudit
+# AgentAudit
 
 **Enterprise-grade middleware for detecting AI hallucinations and enforcing reliability in RAG systems.**
 
