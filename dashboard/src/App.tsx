@@ -23,7 +23,7 @@ function App() {
   const currentStats = stats || defaultStats;
 
   const successRate = useMemo(() => {
-    if (!currentStats || currentStats.total_verifications === 0) return 0;
+    if (currentStats.total_verifications === 0) return 0;
     return ((currentStats.successful_verifications / currentStats.total_verifications) * 100).toFixed(1);
   }, [currentStats]);
 
@@ -39,8 +39,8 @@ function App() {
     return { text: "Unverified", color: "text-red-400" };
   };
 
-  const reliability = getReliabilityLabel(currentStats.average_trust_score || 0);
-  const grounding = getGroundingLabel(currentStats.average_trust_score || 0);
+  const reliability = getReliabilityLabel(currentStats.average_trust_score);
+  const grounding = getGroundingLabel(currentStats.average_trust_score);
 
   if (loading) {
     return (
@@ -151,7 +151,7 @@ function App() {
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
                 <h3 className="text-base md:text-lg font-medium text-gray-400 mb-6 md:mb-8 uppercase tracking-widest text-center">Global Trust Score</h3>
                 <div className="scale-90 md:scale-100">
-                  <TrustGauge score={currentStats.average_trust_score || 0} />
+                  <TrustGauge score={currentStats.average_trust_score} />
                 </div>
                 <div className="mt-6 md:mt-8 grid grid-cols-2 gap-3 md:gap-4 w-full max-w-md">
                   <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
