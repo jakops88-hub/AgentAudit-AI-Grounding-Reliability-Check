@@ -1,0 +1,49 @@
+{
+  "id": "ver_9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c",
+  "created_at": "2025-12-10T08:45:23.127Z",
+  "trust_score": 0.15,
+  "action": "REJECT",
+  "tests": {
+    "grounding": {
+      "pass": false,
+      "score": 0.2,
+      "reason": "The agent's answer contains significant factual inaccuracies that directly contradict the provided context. The answer claims AgentAudit is built with Python and Pinecone, while the context clearly states it uses TypeScript/Node.js and PostgreSQL.",
+      "unsupported_claims": [
+        "AgentAudit is built using Python",
+        "AgentAudit uses Pinecone for vector storage"
+      ],
+      "contradictions": [
+        {
+          "claim": "built using Python",
+          "context_states": "built entirely in TypeScript and Node.js"
+        },
+        {
+          "claim": "uses Pinecone for vector storage",
+          "context_states": "uses PostgreSQL with pgvector for semantic search"
+        }
+      ]
+    },
+    "citation": {
+      "pass": false,
+      "score": 0.1,
+      "reason": "All major technical claims in the answer are incorrect and contradict the source material. No valid citations can be attributed.",
+      "missing_sources": [
+        "Technology stack details",
+        "Database architecture"
+      ]
+    }
+  },
+  "metadata": {
+    "question_length": 45,
+    "answer_length": 89,
+    "context_length": 187,
+    "processing_time_ms": 1247,
+    "model": "gpt-4-turbo",
+    "confidence": "high"
+  },
+  "recommendation": {
+    "action": "REJECT",
+    "reason": "Critical hallucination detected. The answer provides completely incorrect technical information that contradicts documented facts. Recommend regenerating response with proper context grounding.",
+    "suggested_fix": "Regenerate answer ensuring it references the correct tech stack: TypeScript/Node.js backend with PostgreSQL/pgvector database."
+  }
+}
