@@ -117,16 +117,16 @@ export function VerificationConsole() {
   return (
     <div className="glass-panel rounded-2xl p-1 flex flex-col h-full relative overflow-hidden group">
       {/* Decorative HUD Elements */}
-      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
-      <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
-      <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary/30 rounded-bl-lg" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/30 rounded-br-lg" />
+      <div className="absolute top-0 left-0 w-3 h-3 md:w-4 md:h-4 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
+      <div className="absolute top-0 right-0 w-3 h-3 md:w-4 md:h-4 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
+      <div className="absolute bottom-0 left-0 w-3 h-3 md:w-4 md:h-4 border-b-2 border-l-2 border-primary/30 rounded-bl-lg" />
+      <div className="absolute bottom-0 right-0 w-3 h-3 md:w-4 md:h-4 border-b-2 border-r-2 border-primary/30 rounded-br-lg" />
       
-      <div className="p-6 flex flex-col h-full relative z-10">
-        <div className="flex items-center justify-between mb-6">
+      <div className="p-4 md:p-6 flex flex-col h-full relative z-10">
+        <div className="flex items-center justify-between mb-4 md:mb-6">
           <div className="flex items-center gap-2 text-primary">
-            <Cpu size={20} className={loading ? "animate-spin" : ""} />
-            <h3 className="font-mono font-bold tracking-wider">VERIFICATION CONSOLE</h3>
+            <Cpu size={18} className={cn(loading && "animate-spin", "md:w-5 md:h-5")} />
+            <h3 className="font-mono font-bold tracking-wider text-xs md:text-sm">VERIFICATION CONSOLE</h3>
           </div>
           {result && (
             <button 
