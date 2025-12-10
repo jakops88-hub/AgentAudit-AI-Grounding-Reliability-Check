@@ -54,7 +54,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white p-4 md:p-8 relative overflow-hidden">
+    <div className="h-screen bg-[#030303] text-white p-3 md:p-4 lg:p-6 relative overflow-hidden flex flex-col">
       {/* Premium Grid Background */}
       <div className="absolute inset-0 premium-grid [mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,#000_60%,transparent_100%)] pointer-events-none" />
       
@@ -71,9 +71,9 @@ function App() {
         ))}
       </div>
 
-      <div className="max-w-[1600px] mx-auto relative z-10">
+      <div className="max-w-[1800px] mx-auto relative z-10 flex flex-col h-full w-full overflow-hidden">
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 md:mb-4 gap-2 md:gap-3 flex-shrink-0">
           <div className="w-full md:w-auto">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3 flex-wrap">
               <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
@@ -107,18 +107,18 @@ function App() {
           </div>
         </header>
 
-        <div className="space-y-6">
+        <div className="flex-1 flex flex-col gap-3 md:gap-4 overflow-hidden">
           {error && (
-            <div className="p-4 border border-yellow-500/20 bg-yellow-500/5 rounded-xl flex items-center gap-4">
-              <AlertTriangle className="text-yellow-500" size={24} />
+            <div className="p-3 border border-yellow-500/20 bg-yellow-500/5 rounded-lg flex items-center gap-3 flex-shrink-0">
+              <AlertTriangle className="text-yellow-500" size={20} />
               <div>
-                <h3 className="text-sm font-bold text-yellow-500">API Connection Issue</h3>
-                <p className="text-xs text-gray-400">{error} - Dashboard running in offline mode</p>
+                <h3 className="text-xs font-bold text-yellow-500">API Connection Issue</h3>
+                <p className="text-[10px] text-gray-400">{error} - Dashboard running in offline mode</p>
               </div>
             </div>
           )}
             {/* Top Row: Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 flex-shrink-0">
               <MetricCard 
                 title="Total Verifications" 
                 value={currentStats.total_verifications.toLocaleString()} 
@@ -140,20 +140,20 @@ function App() {
             </div>
 
             {/* Bottom Row: Main Panels */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 flex-1 overflow-hidden">
               {/* Left: Verification Console */}
-              <div className="lg:col-span-1 min-h-[500px] lg:min-h-[650px]">
+              <div className="lg:col-span-1 h-full overflow-hidden">
                 <VerificationConsole />
               </div>
 
               {/* Middle: Trust Gauge */}
-              <div className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center relative overflow-hidden min-h-[500px] lg:min-h-[650px]" style={{ zIndex: 1 }}>
+              <div className="glass-panel rounded-xl md:rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center relative overflow-hidden h-full" style={{ zIndex: 1 }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-                <h3 className="text-base md:text-lg font-medium text-gray-400 mb-6 md:mb-8 uppercase tracking-widest text-center relative z-10">Global Trust Score</h3>
-                <div className="scale-90 md:scale-100 relative z-10">
+                <h3 className="text-sm md:text-base font-medium text-gray-400 mb-3 md:mb-4 uppercase tracking-widest text-center relative z-10">Global Trust Score</h3>
+                <div className="scale-75 sm:scale-90 md:scale-100 relative z-10 flex-shrink-0">
                   <TrustGauge score={currentStats.average_trust_score} />
                 </div>
-                <div className="mt-6 md:mt-8 grid grid-cols-2 gap-3 md:gap-4 w-full max-w-md relative z-10">
+                <div className="mt-3 md:mt-6 grid grid-cols-2 gap-2 md:gap-3 w-full max-w-md relative z-10">
                   <div className="text-center p-3 md:p-4 rounded-lg bg-white/5 border border-white/10">
                     <div className="text-xs text-gray-500 uppercase mb-1">Reliability</div>
                     <div className={cn("text-lg md:text-xl font-bold", reliability.color)}>{reliability.text}</div>
@@ -166,8 +166,8 @@ function App() {
               </div>
 
               {/* Right: Live Logs */}
-              <div className="glass-panel rounded-2xl p-4 md:p-6 flex flex-col min-h-[500px] lg:min-h-[650px]">
-                <div className="flex items-center justify-between mb-4 md:mb-6">
+              <div className="glass-panel rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col h-full overflow-hidden">
+                <div className="flex items-center justify-between mb-3 md:mb-4 flex-shrink-0">
                   <h3 className="text-base md:text-lg font-medium text-gray-400 flex items-center gap-2">
                     <Terminal size={16} className="md:w-[18px] md:h-[18px]" />
                     LIVE LOGS

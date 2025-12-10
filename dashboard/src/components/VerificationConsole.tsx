@@ -115,15 +115,15 @@ export function VerificationConsole() {
   };
 
   return (
-    <div className="glass-panel rounded-2xl p-1 flex flex-col h-full relative overflow-hidden group">
+    <div className="glass-panel rounded-xl md:rounded-2xl p-1 flex flex-col h-full relative overflow-hidden group">
       {/* Decorative HUD Elements */}
-      <div className="absolute top-0 left-0 w-3 h-3 md:w-4 md:h-4 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
-      <div className="absolute top-0 right-0 w-3 h-3 md:w-4 md:h-4 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
-      <div className="absolute bottom-0 left-0 w-3 h-3 md:w-4 md:h-4 border-b-2 border-l-2 border-primary/30 rounded-bl-lg" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 md:w-4 md:h-4 border-b-2 border-r-2 border-primary/30 rounded-br-lg" />
+      <div className="absolute top-0 left-0 w-2 h-2 md:w-3 md:h-3 border-t-2 border-l-2 border-primary/30 rounded-tl-lg" />
+      <div className="absolute top-0 right-0 w-2 h-2 md:w-3 md:h-3 border-t-2 border-r-2 border-primary/30 rounded-tr-lg" />
+      <div className="absolute bottom-0 left-0 w-2 h-2 md:w-3 md:h-3 border-b-2 border-l-2 border-primary/30 rounded-bl-lg" />
+      <div className="absolute bottom-0 right-0 w-2 h-2 md:w-3 md:h-3 border-b-2 border-r-2 border-primary/30 rounded-br-lg" />
       
-      <div className="p-4 md:p-6 flex flex-col h-full relative z-10">
-        <div className="flex items-center justify-between mb-4 md:mb-6">
+      <div className="p-3 md:p-4 flex flex-col h-full relative z-10 overflow-hidden">
+        <div className="flex items-center justify-between mb-3 md:mb-4 flex-shrink-0">
           <div className="flex items-center gap-2 text-primary">
             <Cpu size={18} className={cn(loading && "animate-spin", "md:w-5 md:h-5")} />
             <h3 className="font-mono font-bold tracking-wider text-xs md:text-sm">VERIFICATION CONSOLE</h3>
@@ -139,7 +139,7 @@ export function VerificationConsole() {
         </div>
 
         {!result && !loading && (
-          <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex gap-2 mb-3 overflow-x-auto pb-2 scrollbar-hide flex-shrink-0">
             {EXAMPLES.map((ex, i) => (
               <button
                 key={i}
@@ -148,7 +148,7 @@ export function VerificationConsole() {
                   setAnswer(ex.answer); 
                   setContext(ex.context); 
                 }}
-                className="text-xs font-mono bg-white/5 hover:bg-primary/10 border border-white/10 hover:border-primary/30 rounded px-3 py-1.5 whitespace-nowrap transition-all text-gray-400 hover:text-primary flex items-center gap-2"
+                className="text-[10px] md:text-xs font-mono bg-white/5 hover:bg-primary/10 border border-white/10 hover:border-primary/30 rounded px-2 md:px-3 py-1 md:py-1.5 whitespace-nowrap transition-all text-gray-400 hover:text-primary flex items-center gap-1 md:gap-2"
               >
                 {ex.label}
               </button>
@@ -156,7 +156,7 @@ export function VerificationConsole() {
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative">
+        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative min-h-0">
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div 
@@ -164,14 +164,14 @@ export function VerificationConsole() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="h-full flex flex-col items-center justify-center space-y-6"
+                className="h-full flex flex-col items-center justify-center space-y-4"
               >
                 <div className="relative">
-                  <div className="w-24 h-24 border-4 border-primary/20 rounded-full animate-spin-slow" />
+                  <div className="w-16 h-16 md:w-20 md:h-20 border-4 border-primary/20 rounded-full animate-spin-slow" />
                   <div className="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
-                  <Scan className="absolute inset-0 m-auto text-primary animate-pulse" size={32} />
+                  <Scan className="absolute inset-0 m-auto text-primary animate-pulse" size={24} />
                 </div>
-                <div className="w-full max-w-xs bg-black/50 rounded border border-primary/20 p-4 font-mono text-xs space-y-1 h-32 overflow-hidden flex flex-col-reverse">
+                <div className="w-full max-w-xs bg-black/50 rounded border border-primary/20 p-3 font-mono text-[10px] md:text-xs space-y-1 h-24 md:h-28 overflow-hidden flex flex-col-reverse">
                   {scanLog.map((log, i) => (
                     <motion.div 
                       key={i}
@@ -189,24 +189,24 @@ export function VerificationConsole() {
                 key="result"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="space-y-6"
+                className="space-y-3 md:space-y-4"
               >
                 {/* Score Header */}
-                <div className="flex items-center justify-between bg-white/5 p-4 rounded-xl border border-white/10">
+                <div className="flex items-center justify-between bg-white/5 p-3 md:p-4 rounded-lg md:rounded-xl border border-white/10">
                   <div>
-                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Trust Score</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider mb-1">Trust Score</div>
                     <div className={cn(
-                      "text-3xl font-bold font-mono flex items-center gap-2",
+                      "text-2xl md:text-3xl font-bold font-mono flex items-center gap-2",
                       result.trust_score > 0.7 ? "text-green-400" : "text-red-400"
                     )}>
                       {(result.trust_score * 100).toFixed(0)}%
-                      {result.trust_score > 0.7 ? <ShieldCheck size={24} /> : <ShieldAlert size={24} />}
+                      {result.trust_score > 0.7 ? <ShieldCheck size={20} className="md:w-6 md:h-6" /> : <ShieldAlert size={20} className="md:w-6 md:h-6" />}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Action</div>
+                    <div className="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider mb-1">Action</div>
                     <div className={cn(
-                      "px-3 py-1 rounded text-sm font-bold inline-block",
+                      "px-2 md:px-3 py-1 rounded text-xs md:text-sm font-bold inline-block",
                       result.action === 'APPROVE' ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
                     )}>
                       {result.action}
@@ -215,13 +215,13 @@ export function VerificationConsole() {
                 </div>
 
                 {/* Analysis View */}
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="bg-black/40 rounded-lg border border-white/10 overflow-hidden">
-                    <div className="bg-white/5 px-4 py-2 border-b border-white/10 flex items-center gap-2">
-                      <Scan size={14} className="text-primary" />
-                      <span className="text-xs font-mono text-gray-400 uppercase">Semantic Analysis</span>
+                    <div className="bg-white/5 px-3 py-1.5 md:py-2 border-b border-white/10 flex items-center gap-2">
+                      <Scan size={12} className="text-primary md:w-3.5 md:h-3.5" />
+                      <span className="text-[10px] md:text-xs font-mono text-gray-400 uppercase">Semantic Analysis</span>
                     </div>
-                    <div className="p-4 font-mono text-sm">
+                    <div className="p-3 font-mono text-xs md:text-sm">
                       {result.tests?.grounding?.pass ? (
                         <div className="text-green-400/90 flex gap-2">
                           <Check size={16} className="mt-0.5 shrink-0" />
@@ -234,26 +234,26 @@ export function VerificationConsole() {
                   </div>
 
                   {/* Details Grid */}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2 md:gap-3">
                     <div className={cn(
-                      "p-3 rounded-lg border bg-opacity-10",
+                      "p-2 md:p-3 rounded-lg border bg-opacity-10",
                       result.tests?.grounding?.pass 
                         ? "bg-green-500 border-green-500/20" 
                         : "bg-red-500 border-red-500/20"
                     )}>
-                      <div className="text-xs text-gray-400 uppercase mb-1">Grounding</div>
-                      <div className={cn("font-bold", result.tests?.grounding?.pass ? "text-green-400" : "text-red-400")}>
+                      <div className="text-[10px] md:text-xs text-gray-400 uppercase mb-1">Grounding</div>
+                      <div className={cn("text-sm md:text-base font-bold", result.tests?.grounding?.pass ? "text-green-400" : "text-red-400")}>
                         {result.tests?.grounding?.pass ? "VERIFIED" : "FAILED"}
                       </div>
                     </div>
                     <div className={cn(
-                      "p-3 rounded-lg border bg-opacity-10",
+                      "p-2 md:p-3 rounded-lg border bg-opacity-10",
                       result.tests?.citation?.pass 
                         ? "bg-green-500 border-green-500/20" 
                         : "bg-yellow-500 border-yellow-500/20"
                     )}>
-                      <div className="text-xs text-gray-400 uppercase mb-1">Citations</div>
-                      <div className={cn("font-bold", result.tests?.citation?.pass ? "text-green-400" : "text-yellow-400")}>
+                      <div className="text-[10px] md:text-xs text-gray-400 uppercase mb-1">Citations</div>
+                      <div className={cn("text-sm md:text-base font-bold", result.tests?.citation?.pass ? "text-green-400" : "text-yellow-400")}>
                         {result.tests?.citation?.pass ? "VALID" : "MISSING"}
                       </div>
                     </div>
@@ -265,41 +265,41 @@ export function VerificationConsole() {
                 key="form"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-4"
+                className="space-y-3"
               >
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-gray-500 uppercase flex items-center gap-2">
-                    <TerminalIcon size={12} /> User Question
+                <div className="space-y-1.5">
+                  <label className="text-[10px] md:text-xs font-mono text-gray-500 uppercase flex items-center gap-1.5">
+                    <TerminalIcon size={10} className="md:w-3 md:h-3" /> User Question
                   </label>
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Input query..."
-                    className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-16 font-mono placeholder:text-gray-700"
+                    className="w-full bg-black/40 border border-white/10 rounded-lg p-2 md:p-3 text-xs md:text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-12 md:h-14 font-mono placeholder:text-gray-700"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-gray-500 uppercase flex items-center gap-2">
-                    <TerminalIcon size={12} /> Agent Answer
+                <div className="space-y-1.5">
+                  <label className="text-[10px] md:text-xs font-mono text-gray-500 uppercase flex items-center gap-1.5">
+                    <TerminalIcon size={10} className="md:w-3 md:h-3" /> Agent Answer
                   </label>
                   <textarea
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     placeholder="Input agent response..."
-                    className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-24 font-mono placeholder:text-gray-700"
+                    className="w-full bg-black/40 border border-white/10 rounded-lg p-2 md:p-3 text-xs md:text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-16 md:h-20 font-mono placeholder:text-gray-700"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-gray-500 uppercase flex items-center gap-2">
-                    <TerminalIcon size={12} /> Context Source
+                <div className="space-y-1.5">
+                  <label className="text-[10px] md:text-xs font-mono text-gray-500 uppercase flex items-center gap-1.5">
+                    <TerminalIcon size={10} className="md:w-3 md:h-3" /> Context Source
                   </label>
                   <textarea
                     value={context}
                     onChange={(e) => setContext(e.target.value)}
                     placeholder="Input grounding data..."
-                    className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-20 font-mono placeholder:text-gray-700"
+                    className="w-full bg-black/40 border border-white/10 rounded-lg p-2 md:p-3 text-xs md:text-sm text-gray-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all resize-none h-14 md:h-16 font-mono placeholder:text-gray-700"
                   />
                 </div>
               </motion.div>
@@ -311,11 +311,11 @@ export function VerificationConsole() {
           <button
             onClick={handleVerify}
             disabled={!question || !answer}
-            className="mt-4 w-full bg-primary hover:bg-primary/90 border-2 border-primary text-black font-mono font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500 group relative overflow-hidden shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-95"
+            className="mt-3 w-full bg-primary hover:bg-primary/90 border-2 border-primary text-black font-mono font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500 group relative overflow-hidden shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-95 flex-shrink-0 text-sm md:text-base"
             style={{ zIndex: 10 }}
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <Send size={16} className="group-hover:translate-x-1 transition-transform relative z-10" />
+            <Send size={14} className="group-hover:translate-x-1 transition-transform relative z-10 md:w-4 md:h-4" />
             <span className="relative z-10 tracking-wider">INITIATE SCAN</span>
           </button>
         )}
