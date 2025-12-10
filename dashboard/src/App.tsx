@@ -11,10 +11,21 @@ import { cn } from './lib/utils';
 function App() {
   const { stats, loading, error } = useStats();
 
+  // Provide default values when stats are not available
+  const defaultStats = {
+    total_verifications: 0,
+    successful_verifications: 0,
+    failed_verifications: 0,
+    average_trust_score: 0,
+    recent_logs: []
+  };
+
+  const currentStats = stats || defaultStats;
+
   const successRate = useMemo(() => {
-    if (!stats || stats.total_verifications === 0) return 0;
-    return ((stats.successful_verifications / stats.total_verifications) * 100).toFixed(1);
-  }, [stats]);
+    if (currentStats.total_verifications === 0) return 0;
+    return ((currentStats.successful_verifications / currentStats.total_verifications) * 100).toFixed(1);
+  }, [currentStats]);
 
   const getReliabilityLabel = (score: number) => {
     if (score >= 0.8) return { text: "High", color: "text-green-400" };
@@ -28,8 +39,8 @@ function App() {
     return { text: "Unverified", color: "text-red-400" };
   };
 
-  const reliability = getReliabilityLabel(stats?.average_trust_score || 0);
-  const grounding = getGroundingLabel(stats?.average_trust_score || 0);
+  const reliability = getReliabilityLabel(currentStats.average_trust_score);
+  const grounding = getGroundingLabel(currentStats.average_trust_score);
 
   if (loading) {
     return (
@@ -96,19 +107,21 @@ function App() {
           </div>
         </header>
 
-        {error ? (
-          <div className="p-8 border border-red-500/20 bg-red-500/5 rounded-xl text-center">
-            <AlertTriangle className="mx-auto text-red-500 mb-4" size={48} />
-            <h2 className="text-xl font-bold text-red-500 mb-2">Connection Failed</h2>
-            <p className="text-gray-400">{error}</p>
-          </div>
-        ) : (
-          <div className="space-y-6">
+        <div className="space-y-6">
+          {error && (
+            <div className="p-4 border border-yellow-500/20 bg-yellow-500/5 rounded-xl flex items-center gap-4">
+              <AlertTriangle className="text-yellow-500" size={24} />
+              <div>
+                <h3 className="text-sm font-bold text-yellow-500">API Connection Issue</h3>
+                <p className="text-xs text-gray-400">{error} - Dashboard running in offline mode</p>
+              </div>
+            </div>
+          )}
             {/* Top Row: Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <MetricCard 
                 title="Total Verifications" 
-                value={stats?.total_verifications.toLocaleString()} 
+                value={currentStats.total_verifications.toLocaleString()} 
                 icon={Activity}
                 color="text-white"
               />
@@ -138,7 +151,7 @@ function App() {
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
                 <h3 className="text-base md:text-lg font-medium text-gray-400 mb-6 md:mb-8 uppercase tracking-widest text-center">Global Trust Score</h3>
                 <div className="scale-90 md:scale-100">
-                  <TrustGauge score={stats?.average_trust_score || 0} />
+                  <TrustGauge score={currentStats.average_trust_score} />
                 </div>
                 <div className="mt-6 md:mt-8 grid grid-cols-2 gap-3 md:gap-4 w-full max-w-md">
                   <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
@@ -163,10 +176,10 @@ function App() {
                 </div>
                 <div className="flex-1 overflow-y-auto pr-2 space-y-1 custom-scrollbar">
                   <AnimatePresence initial={false}>
-                    {stats?.recent_logs?.map((log) => (
+                    {currentStats.recent_logs?.map((log) => (
                       <LogItem key={log.id} log={log} />
                     ))}
-                    {(!stats?.recent_logs || stats.recent_logs.length === 0) && (
+                    {(!currentStats.recent_logs || currentStats.recent_logs.length === 0) && (
                       <div className="text-center text-gray-600 py-8 md:py-12 font-mono text-xs md:text-sm">
                         WAITING FOR TRAFFIC...
                       </div>
@@ -175,8 +188,7 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
