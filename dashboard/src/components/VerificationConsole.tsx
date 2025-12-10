@@ -311,11 +311,12 @@ export function VerificationConsole() {
           <button
             onClick={handleVerify}
             disabled={!question || !answer}
-            className="mt-4 w-full bg-primary/10 hover:bg-primary/20 border border-primary/50 text-primary font-mono font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+            className="mt-4 w-full bg-primary hover:bg-primary/90 border-2 border-primary text-black font-mono font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500 group relative overflow-hidden shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-95"
+            style={{ zIndex: 10 }}
           >
-            <div className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <Send size={16} className="group-hover:translate-x-1 transition-transform relative z-10" />
-            <span className="relative z-10">INITIATE SCAN</span>
+            <span className="relative z-10 tracking-wider">INITIATE SCAN</span>
           </button>
         )}
       </div>

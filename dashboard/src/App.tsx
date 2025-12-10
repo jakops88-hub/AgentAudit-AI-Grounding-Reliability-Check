@@ -147,18 +147,18 @@ function App() {
               </div>
 
               {/* Middle: Trust Gauge */}
-              <div className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center relative overflow-hidden min-h-[500px] lg:min-h-[650px]">
+              <div className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center relative overflow-hidden min-h-[500px] lg:min-h-[650px]" style={{ zIndex: 1 }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-                <h3 className="text-base md:text-lg font-medium text-gray-400 mb-6 md:mb-8 uppercase tracking-widest text-center">Global Trust Score</h3>
-                <div className="scale-90 md:scale-100">
+                <h3 className="text-base md:text-lg font-medium text-gray-400 mb-6 md:mb-8 uppercase tracking-widest text-center relative z-10">Global Trust Score</h3>
+                <div className="scale-90 md:scale-100 relative z-10">
                   <TrustGauge score={currentStats.average_trust_score} />
                 </div>
-                <div className="mt-6 md:mt-8 grid grid-cols-2 gap-3 md:gap-4 w-full max-w-md">
-                  <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
+                <div className="mt-6 md:mt-8 grid grid-cols-2 gap-3 md:gap-4 w-full max-w-md relative z-10">
+                  <div className="text-center p-3 md:p-4 rounded-lg bg-white/5 border border-white/10">
                     <div className="text-xs text-gray-500 uppercase mb-1">Reliability</div>
                     <div className={cn("text-lg md:text-xl font-bold", reliability.color)}>{reliability.text}</div>
                   </div>
-                  <div className="text-center p-3 md:p-4 rounded-lg bg-white/5">
+                  <div className="text-center p-3 md:p-4 rounded-lg bg-white/5 border border-white/10">
                     <div className="text-xs text-gray-500 uppercase mb-1">Grounding</div>
                     <div className={cn("text-lg md:text-xl font-bold", grounding.color)}>{grounding.text}</div>
                   </div>
