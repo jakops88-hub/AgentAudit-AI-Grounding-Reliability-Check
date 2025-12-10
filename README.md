@@ -6,6 +6,15 @@ AgentAudit acts as a semantic firewall between your AI agents and your end users
 
 Unlike naive RAG implementations that assume "Good Retrieval = Good Answer", AgentAudit programmatically detects ungrounded claims, citation errors, and contradictions before they reach production.
 
+##  Managed API (Skip the setup)
+Don't want to host the vector database yourself? I've deployed a managed version of AgentAudit on RapidAPI.
+
+- **Free Tier:** 100 requests/month (Perfect for testing)
+- **No Docker required:** Just get an API key and call the endpoint.
+
+[👉 **Get your API Key on RapidAPI**](https://rapidapi.com/jakops88/api/agentaudit-ai-hallucination-fact-checker1)
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/50651384-6c50cd68-8de9-40d6-b39b-e14cad227a6e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D50651384-6c50cd68-8de9-40d6-b39b-e14cad227a6e%26entityType%3Dcollection%26workspaceId%3D3f27166b-a9b8-48a8-8913-104f8e9d1958)
 
 ## Live Demo
 
