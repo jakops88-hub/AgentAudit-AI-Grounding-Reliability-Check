@@ -43,7 +43,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#030303] text-white p-4 md:p-8 relative overflow-hidden">
       {/* Premium Grid Background */}
       <div className="absolute inset-0 premium-grid [mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,#000_60%,transparent_100%)] pointer-events-none" />
       
@@ -62,7 +62,7 @@ function App() {
 
       <div className="max-w-[1600px] mx-auto relative z-10">
         {/* Header */}
-        <header className="flex justify-between items-center mb-8">
+        <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 md:gap-0">
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
@@ -115,7 +115,7 @@ function App() {
             </div>
 
             {/* Bottom Row: Main Panels */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[650px]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:h-[650px]">
               {/* Left: Verification Console */}
               <VerificationConsole />
 

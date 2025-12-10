@@ -79,7 +79,7 @@ export function VerificationConsole() {
       });
       
       // Artificial delay to show off the cool animation
-      await new Promise(r => setTimeout(r, 2500));
+      await new Promise(r => setTimeout(r, 1500));
       
       const data = await res.json();
       setResult(data);
