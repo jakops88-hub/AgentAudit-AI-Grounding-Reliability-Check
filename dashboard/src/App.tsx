@@ -84,16 +84,17 @@ function App() {
             </h1>
             <p className="text-gray-500 mt-2 font-mono text-xs md:text-sm">SYSTEM STATUS: <span className="text-green-500">OPERATIONAL</span></p>
           </div>
-          <div className="flex flex-wrap gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
             <a 
               href="https://rapidapi.com/jakops88/api/agentaudit-ai-hallucination-fact-checker1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="glass-panel px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-mono text-primary border border-primary/30 hover:border-primary/60 hover:bg-primary/5 transition-all glow-pulse cursor-pointer group"
+              className="relative px-6 py-3 md:px-8 md:py-3.5 rounded-xl flex items-center gap-3 text-base md:text-lg font-mono font-bold text-black bg-primary border-2 border-primary hover:bg-primary/90 transition-all cursor-pointer group neon-pulse overflow-hidden shadow-[0_0_30px_rgba(0,255,148,0.5)] hover:shadow-[0_0_50px_rgba(0,255,148,0.8)] hover:scale-105 active:scale-95"
             >
-              <Zap size={14} className="group-hover:scale-110 transition-transform" />
-              <span className="hidden sm:inline">TRY API</span>
-              <span className="sm:hidden">API</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+              <Zap size={20} className="group-hover:scale-125 group-hover:rotate-12 transition-all relative z-10 animate-pulse" />
+              <span className="hidden sm:inline relative z-10 tracking-wider">TRY API NOW</span>
+              <span className="sm:hidden relative z-10 tracking-wider">TRY API</span>
             </a>
             <div className="glass-panel px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-mono text-gray-400">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
